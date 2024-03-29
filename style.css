@@ -42,8 +42,8 @@
 
 .line {
   position: absolute;
-  height: 50px;
+  height: 100px;
   width: 10px;
-  background-color: #fff;
+  background-color: rgb(198, 36, 220);
   margin-left: 95px;
 }

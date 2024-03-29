@@ -15,6 +15,7 @@ let keyObj = {
   ArrowDown: false,
   ArrowLeft: false,
   ArrowRight: false,
+  " ": false,
 };
 
 let player = {
@@ -37,6 +38,10 @@ function keyReleased(event) {
   // console.log(event.key);
   let relesedKey = event.key;
   if (relesedKey in keyObj) {
+    if (relesedKey == " ") {
+      player.start = !player.start;
+      console.log(player.start);
+    }
     keyObj[relesedKey] = false;
   }
 }
@@ -46,9 +51,9 @@ function gamePlay() {
   let car = document.querySelector(".car");
   let road = gameArea.getBoundingClientRect();
   //  console.log(road);
-  movingLines();
+  moveLines();
   if (player.start) {
-    if (keyObj.ArrowUp == true && road.top + 2 < player.y) {
+    if (keyObj.ArrowUp == true && road.top < player.y) {
       // console.log(road.top, player.y);
       player.y = player.y - player.speed;
     }
@@ -68,14 +73,14 @@ function gamePlay() {
   }
 }
 
-// Moving lines
+// start Game Logic
 function start() {
   statrScreen.classList.add("hide");
   gameArea.classList.remove("hide");
   player.start = true;
+  requestAnimationFrame(gamePlay);
   gernatingCar();
   lineFormation();
-  requestAnimationFrame(gamePlay);
 }
 
 // Lines formation
@@ -83,21 +88,23 @@ function lineFormation() {
   for (let x = 0; x < 10; x++) {
     let line = document.createElement("div");
     line.className = "line";
+    line.y = x * 150; // sir i missed to write this finally error was here
     line.style.top = x * 75 + "px";
     gameArea.append(line);
   }
 }
 
 // For moving of lines
-function movingLines() {
+function moveLines() {
   let lines = document.querySelectorAll(".line");
-  for (let line of lines) {
-    if (line.offsetTop >= 650) {
-      line.offsetTop -= 740;
+  for (let t of lines) {
+    //  console.log(t);
+    if (t.y >= 662) {
+      t.y = t.y - 750;
     }
-    console.log(line.offsetTop);
-    line.offsetTop = line.offsetTop + player.speed;
-    line.style.top = line.offsetTop + "px";
+
+    t.y = t.y + player.speed; // 5px
+    t.style.top = t.y + "px";
   }
 }
 function gernatingCar() {
